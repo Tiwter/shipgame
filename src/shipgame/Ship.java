@@ -10,8 +10,8 @@ public class Ship{
 	public static final int WIDTH = 40;
 	public static final int HEIGHT = 40;
 	
-	private float x;
-	private float y;
+	protected float x;
+	protected float y;
 	private Image image;
 	
 	public Ship(float x, float y)throws SlickException{
@@ -19,22 +19,36 @@ public class Ship{
 		this.y = y;
 		image = new Image("res/ship.png");
 	}
+	public float getX(){
+		return x + WIDTH/2;
+	}
+	public float getY(){
+		return y + HEIGHT/2;
+	}
 	public void render(){
 		image.draw(x, y);
 	}
 	public void moveup(){
-		this.y -= 1;
+		if(y >= 0){
+			this.y -= 3;
+		}
 	}
 	public void movedown(){
-		this.y += 1;
+		if(getY() + HEIGHT/2 <= 480){
+			this.y += 3;
+		}
 	}
 	public void moveright(){
-		this.x += 1;
+		if(getX() + WIDTH/2 <= 640){
+			this.x += 3;
+		}
 	}
 	public void moveleft(){
-		this.x -= 1;
+		if(x >= 0){
+			this.x -= 3;
+		}
 	}
-	public void updateShipMovement(Input input, int delta){
+	public void updateShipMovement(Input input){
 		if(input.isKeyDown(input.KEY_UP)){
 			moveup();
 		}
@@ -47,5 +61,6 @@ public class Ship{
 		if(input.isKeyDown(input.KEY_RIGHT)){
 			moveright();
 		}
+
 	}
 }
