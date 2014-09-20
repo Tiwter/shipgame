@@ -29,22 +29,22 @@ public class Ship{
 		image.draw(x, y);
 	}
 	public void moveup(){
-		if(y >= 0){
+		if(y >= 20){
 			this.y -= 3;
 		}
 	}
 	public void movedown(){
-		if(getY() + HEIGHT/2 <= 480){
+		if(getY() + HEIGHT/2 <= Shipgame.GAME_HEIGHT - 20){
 			this.y += 3;
 		}
 	}
 	public void moveright(){
-		if(getX() + WIDTH/2 <= 640){
+		if(getX() + WIDTH/2 <= Shipgame.GAME_WIDTH - 150){
 			this.x += 3;
 		}
 	}
 	public void moveleft(){
-		if(x >= 0){
+		if(x >= 20){
 			this.x -= 3;
 		}
 	}

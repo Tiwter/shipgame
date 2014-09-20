@@ -33,6 +33,13 @@ public class Bullet {
 		}
 		else return true;
 	}
+	public boolean isCollide(EnemyShip enemyship){
+		if(x <= enemyship.getX() + enemyship.WIDTH/2 && x >= enemyship.getX() - enemyship.WIDTH/2
+				&& y <= enemyship.getY() + enemyship.HEIGHT/2 && y >= enemyship.getY() - enemyship.HEIGHT){
+			return true;
+		}
+		return false;
+	}
 	public void render(){
 			image.draw(x, y);
 		
