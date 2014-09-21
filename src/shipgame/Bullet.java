@@ -1,16 +1,14 @@
 package shipgame;
 
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Bullet {
 
-	private Image image;
-	private float x;
-	private float y;
-	Graphics g;
+	protected Image image;
+	protected float x;
+	protected float y;
 	
 	public Bullet(float x, float y)throws SlickException{
 		this.x = x;
@@ -40,9 +38,15 @@ public class Bullet {
 		}
 		return false;
 	}
+	public boolean hitPlayer(Ship ship){
+		if(x <= ship.getX() + ship.WIDTH/2 && x >= ship.getX() - Ship.WIDTH/2
+				&& y <= ship.getY() + ship.HEIGHT/2 && y >= ship.getY() - ship.HEIGHT){
+			return true;
+		}
+		return false;
+	}
 	public void render(){
-			image.draw(x, y);
-		
+		image.draw(x, y);
 	}
 	public void shoot(Input input, float shipX, float shipY){
 		if(input.isKeyDown(input.KEY_Z) && y == -10){

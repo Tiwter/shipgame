@@ -2,7 +2,6 @@ package shipgame;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,8 +15,11 @@ public class Shipgame extends BasicGame{
 	
 	Ship ship;
 	Bullet[] bullets;
-	EnemyShip enemy;
+	EnemyShip[] enemies;
+	EnemyBullet[] enemybullets;
+	Stage1 stage1;
 	
+	int temp = 0;
 	int delay = 0;
 	boolean fire = false;
 	Image bg1, bg2;
@@ -30,7 +32,12 @@ public class Shipgame extends BasicGame{
 	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
 		bg2.draw();
 		ship.render();
-		enemy.render();
+		for(EnemyShip enemy : enemies){
+			enemy.render();
+		}
+		for(EnemyBullet enemybullet : enemybullets){
+			enemybullet.render();
+		}
 		for(Bullet bullet : bullets)bullet.render();
 		bg1.draw();
 		// TODO Auto-generated method stub
@@ -42,10 +49,14 @@ public class Shipgame extends BasicGame{
 		
 		ship = new Ship(200,400);
 		bullets = new Bullet[20];
-		enemy = new EnemyShip(200,100, 0, 0);
+		enemybullets = new EnemyBullet[20];
+		for(int i = 0; i <= 19; i++){
+			enemybullets[i] = new EnemyBullet(-10,-10);
+		}
 		bg1 = new Image("res/bg1.png");
 		bg2 = new Image("res/bg2.png");
-		Color background = new Color(128,128,128);
+		enemies = start();
+		
 		for(int i = 0; i <= 19; i++){
 			bullets[i] = new Bullet(-10,-10);
 		}
@@ -57,7 +68,59 @@ public class Shipgame extends BasicGame{
 	public void update(GameContainer arg0, int arg1) throws SlickException {
 		Input input = arg0.getInput();
 		ship.updateShipMovement(input);
-		enemy.update();
+		enemyfire();
+		
+		for(Bullet enemybullet : enemybullets){
+			enemybullet.update();
+			if(enemybullet.hitPlayer(ship)){
+				ship.setXY(-10, -10);
+			}
+		}
+		fire(input);
+	}
+	
+	private void enemyfire() {
+		for(EnemyShip enemy : enemies){
+			enemy.update();
+			if(enemy.getY() == 100){
+				if(temp >= 1000){
+					temp = 0;
+				}
+					enemybullets[temp].setXY(enemy.getX(), enemy.getY());
+					temp++;
+			}
+		}
+		
+	}
+
+	public static void main(String[] args){
+	 try {
+		 Shipgame game = new Shipgame("Ship game");
+	     AppGameContainer appgc = new AppGameContainer(game);
+	     appgc.setDisplayMode(640, 480, false);
+	     //appgc.setDisplayMode(GAME_WIDTH, GAME_HEIGHT, false);
+	     appgc.setTargetFrameRate(60);
+	     appgc.start();
+	 } catch (SlickException e) {
+	     e.printStackTrace();
+	   }
+	}
+	public EnemyShip[] start() throws SlickException{
+		EnemyShip[] enemies = new EnemyShip[10];
+		enemies[0] = new EnemyShip(100, -100, 2, 2);
+		enemies[1] = new EnemyShip(120, -150, 2, 2);
+		enemies[2] = new EnemyShip(140, -200, 2, 2);
+		enemies[3] = new EnemyShip(160, -250, 2, 2);
+		enemies[4] = new EnemyShip(180, -300, 2, 2);
+		enemies[5] = new EnemyShip(420, -800, -2, 2);
+		enemies[6] = new EnemyShip(400, -850, -2, 2);
+		enemies[7] = new EnemyShip(380, -900, -2, 2);
+		enemies[8] = new EnemyShip(360, -950, -2, 2);
+		enemies[9] = new EnemyShip(340, -1000, -2, 2);
+		return enemies;
+		
+	}
+	public void fire(Input input){
 		int i = 0;
 		for(; i <= 19; i++){
 			if(!bullets[i].inUse()){
@@ -70,24 +133,14 @@ public class Shipgame extends BasicGame{
 		}
 		for(Bullet bullet : bullets){
 			bullet.update();
-			if(bullet.isCollide(enemy)){
-				bullet.setXY(-10,-10);
-				enemy.destroyed();
+			for(EnemyShip enemy : enemies){
+				if(bullet.isCollide(enemy)){
+					bullet.setXY(-10,-10);
+					enemy.hited();
+					enemy.destroyed();
+				}
 			}
 		}
 		delay -= 1;
-	}
-	
-	public static void main(String[] args){
-	 try {
-		 Shipgame game = new Shipgame("Ship game");
-	     AppGameContainer appgc = new AppGameContainer(game);
-	     appgc.setDisplayMode(640, 480, false);
-	     //appgc.setDisplayMode(GAME_WIDTH, GAME_HEIGHT, false);
-	     appgc.setTargetFrameRate(60);
-	     appgc.start();
-	 } catch (SlickException e) {
-	     e.printStackTrace();
-	   }
 	}
 }

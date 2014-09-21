@@ -15,9 +15,12 @@ public class Ship{
 	private Image image;
 	
 	public Ship(float x, float y)throws SlickException{
+		setXY(x, y);
+		image = new Image("res/ship.png");
+	}
+	public void setXY(float x, float y){
 		this.x = x;
 		this.y = y;
-		image = new Image("res/ship.png");
 	}
 	public float getX(){
 		return x + WIDTH/2;
