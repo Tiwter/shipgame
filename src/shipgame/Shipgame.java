@@ -49,9 +49,9 @@ public class Shipgame extends BasicGame{
 		
 		ship = new Ship(200,400);
 		bullets = new Bullet[20];
-		enemybullets = new EnemyBullet[20];
-		for(int i = 0; i <= 19; i++){
-			enemybullets[i] = new EnemyBullet(-10,-10);
+		enemybullets = new EnemyBullet[101];
+		for(int i = 0; i <= 100; i++){
+			enemybullets[i] = new EnemySpreadBullet(-10,-10);
 		}
 		bg1 = new Image("res/bg1.png");
 		bg2 = new Image("res/bg2.png");
@@ -70,7 +70,7 @@ public class Shipgame extends BasicGame{
 		ship.updateShipMovement(input);
 		enemyfire();
 		
-		for(Bullet enemybullet : enemybullets){
+		for(EnemyBullet enemybullet : enemybullets){
 			enemybullet.update();
 			if(enemybullet.hitPlayer(ship)){
 				ship.setXY(-10, -10);
@@ -82,12 +82,13 @@ public class Shipgame extends BasicGame{
 	private void enemyfire() {
 		for(EnemyShip enemy : enemies){
 			enemy.update();
-			if(enemy.getY() == 100){
-				if(temp >= 1000){
+			if(enemy.getY() >= 50 && enemy.getY() <= 150 && !enemy.isShoted()){
+				if(temp == 100){
 					temp = 0;
 				}
-					enemybullets[temp].setXY(enemy.getX(), enemy.getY());
-					temp++;
+				enemybullets[temp].setXY(enemy.getX(), enemy.getY());
+				enemy.shoted();
+				temp++;
 			}
 		}
 		
@@ -106,7 +107,7 @@ public class Shipgame extends BasicGame{
 	   }
 	}
 	public EnemyShip[] start() throws SlickException{
-		EnemyShip[] enemies = new EnemyShip[10];
+		EnemyShip[] enemies = new EnemyShip[18];
 		enemies[0] = new EnemyShip(100, -100, 2, 2);
 		enemies[1] = new EnemyShip(120, -150, 2, 2);
 		enemies[2] = new EnemyShip(140, -200, 2, 2);
@@ -117,6 +118,14 @@ public class Shipgame extends BasicGame{
 		enemies[7] = new EnemyShip(380, -900, -2, 2);
 		enemies[8] = new EnemyShip(360, -950, -2, 2);
 		enemies[9] = new EnemyShip(340, -1000, -2, 2);
+		enemies[10] = new EnemyShip(100, -1500, 0, 3);
+		enemies[11] = new EnemyShip(420, -1500, 0, 3);
+		enemies[12] = new EnemyShip(120, -1510, 0, 3);
+		enemies[13] = new EnemyShip(400, -1510, 0, 3);
+		enemies[14] = new EnemyShip(140, -1520, 0, 3);
+		enemies[15] = new EnemyShip(380, -1520, 0, 3);
+		enemies[16] = new EnemyShip(160, -1530, 0, 3);
+		enemies[17] = new EnemyShip(360, -1530, 0, 3);
 		return enemies;
 		
 	}
