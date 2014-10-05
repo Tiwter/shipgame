@@ -19,13 +19,14 @@ public class Shipgame extends BasicGame{
 	EnemySpreadBullet[] enemybullets;
 	Stage1 stage1;
 	
-	int power = 0;
-	int life = 1;
+	int life = 2;
 	int score = 0;
 	int temp = 0;
 	int delay = 0;
 	boolean fire = false;
-	Image bg1, bg2;
+	boolean isGameOver = false;
+	boolean isGameClear = false;
+	Image bg1, bg2 ,gameover, bggameover, bgClear;
 	public Shipgame(String title) {
 		super(title);
 		// TODO Auto-generated constructor stub
@@ -44,9 +45,16 @@ public class Shipgame extends BasicGame{
 		for(Bullet bullet : bullets)bullet.render();
 		bg1.draw();
 		arg1.drawString("Score : " + score, 500, 25);
-		arg1.drawString("Power : " + power, 500, 275);
+		arg1.drawString("Power : " + ship.getPower(), 500, 275);
 		arg1.drawString("Life : " + life, 500, 300);
 		arg1.drawString("Bombe : " + ship.getBombe(), 500, 325);
+		if(isGameOver){
+			bggameover.draw();
+			gameover.draw();
+		}
+		if(isGameClear){
+			bgClear.draw();
+		}
 		// TODO Auto-generated method stub
 		
 	}
@@ -56,12 +64,15 @@ public class Shipgame extends BasicGame{
 		
 		ship = new Ship(200,400);
 		bullets = new Bullet[20];
-		enemybullets = new EnemySpreadBullet[101];
-		for(int i = 0; i <= 100; i++){
+		enemybullets = new EnemySpreadBullet[301];
+		for(int i = 0; i <= 300; i++){
 			enemybullets[i] = new EnemySpreadBullet(-10,-10);
 		}
 		bg1 = new Image("res/bg1.png");
 		bg2 = new Image("res/bg2.png");
+		gameover = new Image("res/gameover.png");
+		bggameover = new Image("res/bggameover.png");
+		bgClear = new Image("res/clear.png");
 		enemies = start();
 		
 		for(int i = 0; i <= 19; i++){
@@ -73,19 +84,27 @@ public class Shipgame extends BasicGame{
 
 	@Override
 	public void update(GameContainer arg0, int arg1) throws SlickException {
-		Input input = arg0.getInput();
-		ship.updateShipMovement(enemies, input);
-		enemyfire();
+		if(!isGameOver){
+			Input input = arg0.getInput();
+			ship.updateShipMovement(enemies, input);
+			enemyfire();
 		
-		for(EnemyBullet enemybullet : enemybullets){
-			enemybullet.update();
-			if(enemybullet.hitPlayer(ship) && !ship.isInvincible()){
-				life--;
-				ship.destroyed();
-				//ship.setXY(250, 500);
+			for(EnemyBullet enemybullet : enemybullets){
+				enemybullet.update();
+				if(enemybullet.hitPlayer(ship) && !ship.isInvincible()){
+					life--;
+					ship.destroyed();
+				}
 			}
+			fire(input);
 		}
-		fire(input);
+		if(life < 0){
+			isGameOver = true;
+			life = 0;
+		}
+		if(enemies[60].getY() >= -10){
+			isGameClear = true;
+		}
 	}
 	
 	private void enemyfire() {
@@ -93,9 +112,10 @@ public class Shipgame extends BasicGame{
 			enemy.update();
 			if(enemy.isDestroyed() && !enemy.isGet()){
 				score += enemy.getscore();
+				ship.powerUp();
 			}
-			if(enemy.getY() >= 50 && enemy.getY() <= 150 && !enemy.isShoted()){
-				if(temp == 100){
+			if(enemy.isInScreen() && (enemy.getY() >= enemy.getStartFire() && enemy.getY() <= 150 && !enemy.isShoted())){
+				if(temp == 300){
 					temp = 0;
 				}
 				enemybullets[temp].setXY(enemy.getX(), enemy.getY());
@@ -119,7 +139,7 @@ public class Shipgame extends BasicGame{
 	   }
 	}
 	public EnemyShip[] start() throws SlickException{
-		EnemyShip[] enemies = new EnemyShip[24];
+		EnemyShip[] enemies = new EnemyShip[61];
 		enemies[0] = new EnemyShip(100, -100, 2, 2);
 		enemies[1] = new EnemyShip(120, -150, 2, 2);
 		enemies[2] = new EnemyShip(140, -200, 2, 2);
@@ -144,6 +164,44 @@ public class Shipgame extends BasicGame{
 		enemies[21] = new EnemyShip(400, -2250, 0, 2);
 		enemies[22] = new EnemyShip(100, -2400, 0, 2);
 		enemies[23] = new EnemyShip(400, -2550, 0, 2);
+		enemies[24] = new EnemyShip(-50, -2700, 5, 3);
+		enemies[25] = new EnemyShip(-50, -2750, 5 ,3);
+		enemies[26] = new EnemyShip(-50, -2800, 5 ,3);
+		enemies[27] = new EnemyShip(-50, -2850, 5 ,3);
+		enemies[28] = new EnemyShip(-50, -2900, 5 ,3);
+		enemies[29] = new EnemyShip(540, -3050, -5 , 3);
+		enemies[30] = new EnemyShip(540, -3100, -5 , 3);
+		enemies[31] = new EnemyShip(540, -3150, -5 , 3);
+		enemies[32] = new EnemyShip(540, -3200, -5 , 3);
+		enemies[33] = new EnemyShip(540, -3250, -5 , 3);
+		enemies[34] = new EnemyShip(-50, -3500, 5 , 3);
+		enemies[35] = new EnemyShip(540, -3550, -5 , 3);
+		enemies[36] = new EnemyShip(-50, -3600, 5 , 3);
+		enemies[37] = new EnemyShip(540, -3650, -5 , 3);
+		enemies[38] = new EnemyShip(-50, -3700, 5 , 3);
+		enemies[39] = new EnemyShip(540, -3750, -5 , 3);
+		enemies[40] = new EnemyShip(-50, -3800, 5 , 3);
+		enemies[41] = new EnemyShip(540, -3850, -5 , 3);
+		enemies[42] = new EnemyShip(-50, -3900, 5 , 3);
+		enemies[43] = new EnemyShip(540, -3950, -5 , 3);
+		enemies[44] = new EnemyShip(60, -4200, 0, 1);
+		enemies[45] = new EnemyShip(420, -4300, 0, 1);
+		enemies[46] = new EnemyShip(60, -4400, 0, 1);
+		enemies[47] = new EnemyShip(420, -4500, 0, 1);
+		enemies[48] = new EnemyShip(60, -4600, 0, 1);
+		enemies[49] = new EnemyShip(420, -4700, 0, 1);
+		enemies[50] = new EnemyShip(-50, -5200, 3, 0, 60);
+		enemies[51] = new EnemyShip(-50, -5300, 3, 0, 60);
+		enemies[52] = new EnemyShip(-50, -5400, 3, 0, 60);
+		enemies[53] = new EnemyShip(-50, -5500, 3, 0, 60);
+		enemies[54] = new EnemyShip(-50, -5600, 3, 0, 60);
+		enemies[55] = new EnemyShip(540, -5900, -3, 0, 60);
+		enemies[56] = new EnemyShip(540, -6000, -3, 0, 60);
+		enemies[57] = new EnemyShip(540, -6100, -3, 0, 60);
+		enemies[58] = new EnemyShip(540, -6200, -3, 0, 60);
+		enemies[59] = new EnemyShip(540, -6300, -3, 0, 60);
+		enemies[60] = new EnemyShip(-500, -6900, 0, 0);
+		
 		return enemies;
 		
 	}
@@ -166,6 +224,7 @@ public class Shipgame extends BasicGame{
 					enemy.hited();
 				}
 				enemy.destroyed();
+				
 			}
 		}
 		delay -= 1;

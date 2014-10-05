@@ -7,7 +7,7 @@ public class EnemyShip {
 
 	public final float WIDTH = 40;
 	public final float HEIGHT = 40;
-	private float x, y, vx, vy;
+	private float x, y, vx, vy, startfire = 50;
 	private int hp = 3;
 	private int reloadtime = 0;
 	private boolean destroyed = false;
@@ -19,6 +19,13 @@ public class EnemyShip {
 		setXY(x, y);
 		this.vx = vx;
 		this.vy = vy;
+		image = new Image("res/enemyship.png");
+	}
+	public EnemyShip(float x, float y, float vx, float vy, float startfire)throws SlickException{
+		setXY(x, y);
+		this.vx = vx;
+		this.vy = vy;
+		this.startfire = startfire;
 		image = new Image("res/enemyship.png");
 	}
 	public void setXY(float x, float y){
@@ -80,14 +87,17 @@ public class EnemyShip {
 		}
 		return false;
 	}
+	public float getStartFire(){
+		return startfire;
+	}
 	public void render(){
 		image.draw(x,y);
 	}
 	public void update(){
-		if(y <= -10){
+		if(y <= -10 || (y <= startfire && y != 50)){
 			y += 2;
 		}
-		if(y > -10){
+		if(y > -10 || x <= 0){
 			y += vy;
 			x += vx;
 		}

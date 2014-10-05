@@ -16,12 +16,12 @@ public class EnemySpreadBullet extends EnemyBullet {
 	}
 	@Override
 	public boolean hitPlayer(Ship ship){
-		if((x <= ship.getX() + ship.WIDTH/2 && x >= ship.getX() - Ship.WIDTH/2
-				&& y <= ship.getY() + ship.HEIGHT/2 && y >= ship.getY() - ship.HEIGHT)
-				|| (x + bulletLeft <= ship.getX() + ship.WIDTH/2 && x + bulletLeft >= ship.getX() - Ship.WIDTH/2
-				&& y - temp <= ship.getY() + ship.HEIGHT/2 && y -temp >= ship.getY() - ship.HEIGHT)
-				|| (x - bulletRight <= ship.getX() + ship.WIDTH/2 && x - bulletRight >= ship.getX() - Ship.WIDTH/2
-				&& y - temp <= ship.getY() + ship.HEIGHT/2 && y - temp >= ship.getY() - ship.HEIGHT)){
+		if((x <= ship.getX() + ship.HITBOX/2 && x >= ship.getX() - Ship.HITBOX/2
+				&& y <= ship.getY() + ship.HITBOX/2 && y >= ship.getY() - ship.HITBOX)
+				|| (x + bulletLeft <= ship.getX() + ship.HITBOX/2 && x + bulletLeft >= ship.getX() - Ship.HITBOX/2
+				&& y - temp <= ship.getY() + ship.HITBOX/2 && y -temp >= ship.getY() - ship.HITBOX)
+				|| (x - bulletRight <= ship.getX() + ship.HITBOX/2 && x - bulletRight >= ship.getX() - Ship.HITBOX/2
+				&& y - temp <= ship.getY() + ship.HITBOX/2 && y - temp >= ship.getY() - ship.HITBOX)){
 			setXY(-10, -10);
 			return true;
 		}
