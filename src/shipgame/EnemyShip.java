@@ -16,11 +16,14 @@ public class EnemyShip {
 	private Image image;
 	
 	public EnemyShip(float x, float y, float vx, float vy)throws SlickException{
-		this.x = x;
-		this.y = y;
+		setXY(x, y);
 		this.vx = vx;
 		this.vy = vy;
 		image = new Image("res/enemyship.png");
+	}
+	public void setXY(float x, float y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	public float getX(){
@@ -48,12 +51,15 @@ public class EnemyShip {
 			}
 		}
 	}
+	public void getHitByBombe(){
+		hp = 0;
+	}
 	public void destroyed(){
 		if(hp <= 0){
 			vx = 0;
 			vy = 0;
-			x = -20;
-			y = -20;
+			x = -30;
+			y = -30;
 			destroyed = true;
 		}
 	}
@@ -66,6 +72,13 @@ public class EnemyShip {
 	public int getscore(){
 		isGet = true;
 		return 100;
+	}
+	protected boolean isInScreen(){
+		if(getX() >= 20-WIDTH/2 && getX() <= 490-WIDTH/2
+				&& getY() >= 20-HEIGHT/2 && getY() <= 460-HEIGHT/2){
+			return true;
+		}
+		return false;
 	}
 	public void render(){
 		image.draw(x,y);

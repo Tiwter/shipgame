@@ -14,6 +14,8 @@ public class Ship{
 	private boolean invincible = false;
 	private int invincibleTime = 0;
 	private Image image, imageInvincible;
+	private int bombeReload = 20;
+	private int bombe = 2;
 	
 	public Ship(float x, float y)throws SlickException{
 		setXY(x, y);
@@ -29,6 +31,9 @@ public class Ship{
 	}
 	public float getY(){
 		return y + HEIGHT/2;
+	}
+	public int getBombe(){
+		return bombe;
 	}
 	public boolean isInvincible(){
 		return invincible;
@@ -74,7 +79,22 @@ public class Ship{
 			this.x -= 3;
 		}
 	}
-	public void updateShipMovement(Input input){
+	public void bombe(EnemyShip[] enemies){
+		if(bombeReload >= 10){
+			for(int i = 0; i < enemies.length; i ++){
+				if(enemies[i].isInScreen()){
+					enemies[i].getHitByBombe();
+				}
+			}
+			bombeReload = 0;
+			bombe--;
+		}
+		bombeReload++;
+		}
+	public void updateShipMovement(EnemyShip[] enemies ,Input input){
+		if(input.isKeyDown(input.KEY_X)){
+			bombe(enemies);
+		}
 		if(input.isKeyDown(input.KEY_UP)){
 			moveup();
 		}

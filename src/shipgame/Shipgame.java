@@ -16,12 +16,11 @@ public class Shipgame extends BasicGame{
 	Ship ship;
 	Bullet[] bullets;
 	EnemyShip[] enemies;
-	EnemyBullet[] enemybullets;
+	EnemySpreadBullet[] enemybullets;
 	Stage1 stage1;
 	
 	int power = 0;
 	int life = 1;
-	int bombe = 2;
 	int score = 0;
 	int temp = 0;
 	int delay = 0;
@@ -47,7 +46,7 @@ public class Shipgame extends BasicGame{
 		arg1.drawString("Score : " + score, 500, 25);
 		arg1.drawString("Power : " + power, 500, 275);
 		arg1.drawString("Life : " + life, 500, 300);
-		arg1.drawString("Bombe : " + bombe, 500, 325);
+		arg1.drawString("Bombe : " + ship.getBombe(), 500, 325);
 		// TODO Auto-generated method stub
 		
 	}
@@ -57,7 +56,7 @@ public class Shipgame extends BasicGame{
 		
 		ship = new Ship(200,400);
 		bullets = new Bullet[20];
-		enemybullets = new EnemyBullet[101];
+		enemybullets = new EnemySpreadBullet[101];
 		for(int i = 0; i <= 100; i++){
 			enemybullets[i] = new EnemySpreadBullet(-10,-10);
 		}
@@ -75,7 +74,7 @@ public class Shipgame extends BasicGame{
 	@Override
 	public void update(GameContainer arg0, int arg1) throws SlickException {
 		Input input = arg0.getInput();
-		ship.updateShipMovement(input);
+		ship.updateShipMovement(enemies, input);
 		enemyfire();
 		
 		for(EnemyBullet enemybullet : enemybullets){
@@ -165,10 +164,11 @@ public class Shipgame extends BasicGame{
 				if(bullet.isCollide(enemy)){
 					bullet.setXY(-10,-10);
 					enemy.hited();
-					enemy.destroyed();
 				}
+				enemy.destroyed();
 			}
 		}
 		delay -= 1;
 	}
+
 }
