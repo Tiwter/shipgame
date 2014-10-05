@@ -1,6 +1,5 @@
 package shipgame;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -12,11 +11,14 @@ public class Ship{
 	
 	protected float x;
 	protected float y;
-	private Image image;
+	private boolean invincible = false;
+	private int invincibleTime = 0;
+	private Image image, imageInvincible;
 	
 	public Ship(float x, float y)throws SlickException{
 		setXY(x, y);
 		image = new Image("res/ship.png");
+		imageInvincible = new Image("res/ship2.png");
 	}
 	public void setXY(float x, float y){
 		this.x = x;
@@ -28,8 +30,29 @@ public class Ship{
 	public float getY(){
 		return y + HEIGHT/2;
 	}
+	public boolean isInvincible(){
+		return invincible;
+	}
+	public void invincibleTime(){
+		if(invincible){
+			invincibleTime++;
+		}
+		if(invincibleTime >= 200){
+			invincibleTime = 0;
+			invincible = false;
+		}
+	}
+	public void destroyed(){
+		invincible = true;
+		setXY(200,500);
+	}
 	public void render(){
-		image.draw(x, y);
+		if(isInvincible()){
+			imageInvincible.draw(x , y);
+		}
+		else{
+			image.draw(x, y);
+		}
 	}
 	public void moveup(){
 		if(y >= 20){
@@ -64,6 +87,10 @@ public class Ship{
 		if(input.isKeyDown(input.KEY_RIGHT)){
 			moveright();
 		}
+		if(y >= 400 && isInvincible()){
+				y--;
+		}
+		invincibleTime();
 
 	}
 }

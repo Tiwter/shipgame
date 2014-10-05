@@ -19,6 +19,10 @@ public class Shipgame extends BasicGame{
 	EnemyBullet[] enemybullets;
 	Stage1 stage1;
 	
+	int power = 0;
+	int life = 1;
+	int bombe = 2;
+	int score = 0;
 	int temp = 0;
 	int delay = 0;
 	boolean fire = false;
@@ -40,6 +44,10 @@ public class Shipgame extends BasicGame{
 		}
 		for(Bullet bullet : bullets)bullet.render();
 		bg1.draw();
+		arg1.drawString("Score : " + score, 500, 25);
+		arg1.drawString("Power : " + power, 500, 275);
+		arg1.drawString("Life : " + life, 500, 300);
+		arg1.drawString("Bombe : " + bombe, 500, 325);
 		// TODO Auto-generated method stub
 		
 	}
@@ -72,8 +80,10 @@ public class Shipgame extends BasicGame{
 		
 		for(EnemyBullet enemybullet : enemybullets){
 			enemybullet.update();
-			if(enemybullet.hitPlayer(ship)){
-				ship.setXY(-10, -10);
+			if(enemybullet.hitPlayer(ship) && !ship.isInvincible()){
+				life--;
+				ship.destroyed();
+				//ship.setXY(250, 500);
 			}
 		}
 		fire(input);
@@ -82,6 +92,9 @@ public class Shipgame extends BasicGame{
 	private void enemyfire() {
 		for(EnemyShip enemy : enemies){
 			enemy.update();
+			if(enemy.isDestroyed() && !enemy.isGet()){
+				score += enemy.getscore();
+			}
 			if(enemy.getY() >= 50 && enemy.getY() <= 150 && !enemy.isShoted()){
 				if(temp == 100){
 					temp = 0;
@@ -107,7 +120,7 @@ public class Shipgame extends BasicGame{
 	   }
 	}
 	public EnemyShip[] start() throws SlickException{
-		EnemyShip[] enemies = new EnemyShip[18];
+		EnemyShip[] enemies = new EnemyShip[24];
 		enemies[0] = new EnemyShip(100, -100, 2, 2);
 		enemies[1] = new EnemyShip(120, -150, 2, 2);
 		enemies[2] = new EnemyShip(140, -200, 2, 2);
@@ -126,6 +139,12 @@ public class Shipgame extends BasicGame{
 		enemies[15] = new EnemyShip(380, -1520, 0, 3);
 		enemies[16] = new EnemyShip(160, -1530, 0, 3);
 		enemies[17] = new EnemyShip(360, -1530, 0, 3);
+		enemies[18] = new EnemyShip(100, -1800, 0, 2);
+		enemies[19] = new EnemyShip(400, -1950, 0, 2);
+		enemies[20] = new EnemyShip(100, -2100, 0, 2);
+		enemies[21] = new EnemyShip(400, -2250, 0, 2);
+		enemies[22] = new EnemyShip(100, -2400, 0, 2);
+		enemies[23] = new EnemyShip(400, -2550, 0, 2);
 		return enemies;
 		
 	}

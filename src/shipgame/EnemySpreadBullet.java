@@ -1,6 +1,5 @@
 package shipgame;
 
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class EnemySpreadBullet extends EnemyBullet {

@@ -8,9 +8,11 @@ public class EnemyShip {
 	public final float WIDTH = 40;
 	public final float HEIGHT = 40;
 	private float x, y, vx, vy;
-	private int hp = 1;
+	private int hp = 3;
 	private int reloadtime = 0;
+	private boolean destroyed = false;
 	private boolean shoted = false;
+	private boolean isGet = false;
 	private Image image;
 	
 	public EnemyShip(float x, float y, float vx, float vy)throws SlickException{
@@ -40,7 +42,7 @@ public class EnemyShip {
 	private void reloaded(){
 		if(isShoted()){
 			reloadtime++;
-			if(reloadtime >= 10){
+			if(reloadtime >= 15){
 				shoted = false;
 				reloadtime = 0;
 			}
@@ -52,7 +54,18 @@ public class EnemyShip {
 			vy = 0;
 			x = -20;
 			y = -20;
+			destroyed = true;
 		}
+	}
+	public boolean isDestroyed(){
+		return destroyed;
+	}
+	public boolean isGet(){
+		return isGet;
+	}
+	public int getscore(){
+		isGet = true;
+		return 100;
 	}
 	public void render(){
 		image.draw(x,y);

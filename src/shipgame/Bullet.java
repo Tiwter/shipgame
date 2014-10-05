@@ -41,6 +41,7 @@ public class Bullet {
 	public boolean hitPlayer(Ship ship){
 		if(x <= ship.getX() + ship.WIDTH/2 && x >= ship.getX() - Ship.WIDTH/2
 				&& y <= ship.getY() + ship.HEIGHT/2 && y >= ship.getY() - ship.HEIGHT){
+			setXY(-10, -10);
 			return true;
 		}
 		return false;
